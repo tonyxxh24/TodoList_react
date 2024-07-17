@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './TodoList.module.css'
 import { useAuth } from './AuthContext';
 import { useTheme } from './ThemeContext';
+import { Link, useNavigate } from 'react-router-dom';
 
 function TodoList() {
   // State to store the list of tasks
@@ -10,6 +11,8 @@ function TodoList() {
   const [inputValue, setInputValue] = useState('');
   const { user, login, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+
+  const navigate = useNavigate();
 
   // useEffect hook to load tasks from localStorage when the component mounts
   useEffect(() => {
@@ -51,41 +54,41 @@ function TodoList() {
   };
 
   return (
-    <div className={`${styles.todoList} ${styles[theme]}`}>
-      <h1>Todo List</h1>
-      <button onClick={toggleTheme}>Toggle Theme</button>
-      {user ? (
-        <>
-          <p>Welcome, {user.username}! <button onClick={logout}>Logout</button></p>
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Enter a new task"
-            className={styles.input}
-          />
-          <button onClick={addTask} className={styles.addButton}>Add Task</button>
-          <ul className={styles.taskList}>
-            {tasks
-              .filter(task => task.user === user.username)
-              .map((task) => (
-                <li key={task.id} className={styles.taskItem}>
+      <div className={`${styles.todoList} ${styles[theme]}`}>
+        <h1>Todo List</h1>
+        <button onClick={toggleTheme}>Toggle Theme</button>
+        {user ? (
+          <>
+            <p>Welcome, {user.username}! <button onClick={logout}>Logout</button></p>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Enter a new task"
+              className={styles.input}
+            />
+            <button onClick={addTask} className={styles.addButton}>Add Task</button>
+            <ul className={styles.taskList}>
+              {tasks.filter(task => task.user === user.username).map((task, index) => (
+                <li key={index} className={styles.taskItem}>
                   <span className={task.completed ? styles.completed : ''}>
                     {task.text}
                   </span>
                   <div>
-                    <button onClick={() => toggleTask(task.id)} className={styles.taskButton}>Toggle</button>
-                    <button onClick={() => deleteTask(task.id)} className={styles.taskButton}>Delete</button>
+                    <button onClick={() => toggleTask(index)} className={styles.taskButton}>Toggle</button>
+                    <button onClick={() => deleteTask(index)} className={styles.taskButton}>Delete</button>
+                    <Link to={`/task/${task.id}`} className={styles.taskButton}>View Details</Link>
                   </div>
                 </li>
               ))}
-          </ul>
-        </>
-      ) : (
-        <button onClick={() => login('testUser')}>Login</button>
-      )}
-    </div>
-  );
+            </ul>
+            <Link to="/completed" className={styles.addButton}>View Completed Tasks</Link>
+          </>
+        ) : (
+          <button onClick={() => login('testUser')}>Login</button>
+        )}
+      </div>
+    );
 }
 
 export default TodoList;
