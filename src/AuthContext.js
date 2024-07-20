@@ -17,9 +17,16 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const register = (username, email, password) => {
+    // In a real application, you would send this data to your backend
+    // For this example, we'll just log the user in immediately
+    console.log(`Registering user: ${username}, ${email}`);
+    setUser({ username });
+  };
+
   // Provide the authentication state and functions to children
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,11 +1,12 @@
 import React from 'react';
-import TodoList from './TodoList';
-import TodoListStyledComp from './TodoListStyledComp';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import { ThemeProvider } from './ThemeContext';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import TodoList from './TodoList';
+// import TodoListStyledComp from './TodoListStyledComp';
 import CompletedTasks from './CompletedTasks';
 import TaskDetails from './TaskDetails';
+import RegistrationForm from './RegistrationForm';
 
 // 1st version
 // function App() {
@@ -34,6 +35,7 @@ function App() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/completed">Completed Tasks</Link></li>
+              <li><Link to="/register">Register</Link></li>
             </ul>
           </nav>
 
@@ -42,6 +44,7 @@ function App() {
             <Route path="/" element={<TodoList />} />
             <Route path="/completed" element={<CompletedTasks />} />
             <Route path="/task/:id" element={<TaskDetails />} />
+            <Route path="/register" element={<RegistrationForm />} />
           </Routes>
         </Router>
       </ThemeProvider>
